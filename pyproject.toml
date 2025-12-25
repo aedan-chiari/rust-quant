@@ -1,0 +1,77 @@
+[build-system]
+requires = ["maturin>=1.0,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "rust-quant"
+version = "0.1.0"
+description = "High-performance quantitative finance library for derivatives pricing. Built with Rust (PyO3) and modern Python tooling (uv)."
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+authors = [
+    { name = "Aedan Chiari", email = "aedan.chiari@gmail.com" }
+]
+keywords = ["derivatives", "options", "quantitative-finance", "black-scholes", "rust", "pyo3", "finance"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Financial and Insurance Industry",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Rust",
+    "Topic :: Office/Business :: Financial",
+    "Topic :: Scientific/Engineering :: Mathematics",
+]
+
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "maturin>=1.10.2",
+    "pytest>=9.0.2",
+    "ruff>=0.8.0",
+    "marimo>=0.18.4",
+]
+
+[tool.maturin]
+features = ["pyo3/extension-module"]
+python-source = "python"
+
+[dependency-groups]
+dev = [
+    "maturin>=1.10.2",
+    "pytest>=9.0.2",
+    "ruff>=0.8.0",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+ignore = [
+    "ERA001",   # Commented out code (useful for documentation)
+    "N806",     # Variable in function should be lowercase (allows mathematical notation)
+    "PLR0913",  # Too many arguments (needed for complex financial functions)
+    "PLR2004",  # Magic value in comparison (financial calculations use many constants)
+    "RUF001",   # Ambiguous unicode - Greek letters are intentional (Δ, Γ, etc.)
+    "RUF003",   # Ambiguous unicode in comment - Greek letters are intentional"
+    "RUF001",   # Ambiguous unicode - Greek letters are intentional (Δ, Γ, etc.)"
+    "N806",    # Variable in function should be lowercase (allows mathematical notation)
+    "PLR2004", # Magic value in comparison (financial calculations use many constants)
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = ["S101", "PLR2004", "ERA001", "RUF003", "N806"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
